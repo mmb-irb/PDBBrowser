@@ -1,0 +1,59 @@
+<html>
+    <head>
+        <meta http-equiv="content-type" content="text/html; charset=ISO-8859-1">
+        <title>PDB Browser</title>
+        <link rel="stylesheet" type="text/css" href="estil.css">
+    </head>
+    <body bgcolor="#ffffff">
+        <h1>DBW - PDB Browser (No PHP version)</h1>
+        <form name="MainForm" action="searchTest.php" method="POST" enctype="multipart/form-data">
+            <table align="center" border="0" cellpadding="4" cellspacing="2">
+                <tbody>
+                    <tr>
+                        <td>PDB Id</td>
+                        <td><input name="idCode" size="5" maxlength="4" type="text"></td>
+                    </tr>
+                    <tr>
+                        <td colspan="2"><b>Search fields</b></td>
+                    </tr>
+                    <tr>
+                        <td>Resolution:</td>
+                        <td>From <input name="minRes" value="0.0" size="5" type="text"> to <input name="maxRes" value="Inf" size="5" type="text"></td>
+                    </tr>
+                    <tr>
+                        <td>Compound Type:</td>
+                        <td>
+                            <input name="idCompType[1]" type="checkbox"> nuc
+                            <input name="idCompType[2]" type="checkbox"> prot
+                            <input name="idCompType[3]" type="checkbox"> prot-nuc
+                            <input name="idCompType[4]" type="checkbox"> carb
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>Exp Type:</td>
+                        <td>
+                            <input name="idExpClasse[1]" type="checkbox"> diffraction
+                            <input name="idExpClasse[3]" type="checkbox"> EM
+                            <input name="idExpClasse[2]" type="checkbox"> NMR
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>Text Search:</td>
+                        <td><input name="query" size="60" type="text"></td>
+                    </tr>
+                    <tr>
+                        <td>Sequence search:</td>
+                        <td><textarea name="seqQuery" rows="4" cols="60"></textarea><br>
+                            Uploaded sequence file: <input name="seqFile" type="file"/></td>
+                    </tr>
+                    <tr>
+                        <td colspan="2" align="center">
+                            <input value="Submit" type="submit"> 
+                            <input value="Reset" type="reset">
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        </form>
+    </body>
+</html>

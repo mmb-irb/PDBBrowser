@@ -1,0 +1,7 @@
+body {font-family: Verdana, Arial, sans-serif; font-size: 12px}
+th {background-color: #cccccc; color:#ffffff}
+tr:nth-child(odd) {background-color: #eeeeee}
+
+.button {padding:2px;display: inline; color:#ffffff; background-color: #aaaaaa}
+.button a {color:#ffffff; text-decoration:none}
+.button a:hover {font-weight:bold}
