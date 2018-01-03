@@ -33,19 +33,19 @@ include_once "$incDir/libDBW.inc.php";
 $textFields = Array('e.header', 'e.compound', 'a.author', 's.source', 'sq.header');
 
 // Compounds
-$rs = mysql_query("SELECT * from comptype where type like '%nuc%'") or print mysql_error();
-while ($rsF = mysql_fetch_array($rs)) {
+$rs = mysqli_query($mysqli, "SELECT * from comptype where type like '%nuc%'") or print mysql_error();
+while ($rsF = mysqli_fetch_array($rs)) {
     $compTypeArray[$rsF['idCompType']] = $rsF;
 }
 
 //expTypes
-$rs = mysql_query("SELECT * from expType") or print mysql_error();
-while ($rsF = mysql_fetch_array($rs)) {
+$rs = mysqli_query($mysqli,"SELECT * from expType") or print mysql_error();
+while ($rsF = mysqli_fetch_array($rs)) {
     $expTypeArray[$rsF['idExpType']] = $rsF;
 }
 //expClasses
-$rs = mysql_query("SELECT * from expClasse") or print mysql_error();
-while ($rsF = mysql_fetch_array($rs)) {
+$rs = mysqli_query($mysqli,"SELECT * from expClasse") or print mysql_error();
+while ($rsF = mysqli_fetch_array($rs)) {
     $expClasseArray[$rsF['idExpClasse']] = $rsF;
 }
 // Start session to store queries

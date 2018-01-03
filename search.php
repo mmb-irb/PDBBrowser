@@ -49,10 +49,10 @@ if ($_REQUEST['idCode']) {
     }
     //    text query, adapted to use fulltext indexes, $textFields is defined in globals.inc.php and
     // lists all text fields to be searched in.
-    if ($_REQUEST['query1']) {
+    if ($_REQUEST['query']) {
         $ORconds = array();
         foreach (array_values($textFields) as $field) {
-            $ORconds[] = "MATCH (" . $field . ") AGAINST ('" . $_REQUEST['query1'] . "' "
+            $ORconds[] = "MATCH (" . $field . ") AGAINST ('" . $_REQUEST['query'] . "' "
                     . "IN BOOLEAN MODE)";
         }
         $ANDconds[] = "(" . join(" OR ", $ORconds) . ")";
@@ -70,10 +70,11 @@ if ($_REQUEST['idCode']) {
     //    main SQL string, make sure that all tables are joined, and relationships included
     // SELECT columns FROM tables WHERE Conditions_from_relationships AND Conditions_from_query_Form
     $sql = "SELECT distinct e.idCode,e.header,e.compound,e.resolution,s.source,et.expType FROM 
-        expType et, author_has_entry ae, author a, source s, entry_has_source es, entry e WHERE
+        expType et, author_has_entry ae, author a, source s, entry_has_source es, entry e, sequence sq WHERE
         e.idExpType=et.idExpType AND
         ae.idCode=e.idCode and ae.idAuthor=a.idAuthor AND
         es.idCode=e.idCode and es.idsource=s.idSource AND
+        e.idCode = sq.idCode AND
         " . join(" AND ", $ANDconds);
 //    Ordering will be done by the DataTable element using JQuery, if not available can also be done from the SQL 
 //    switch ($order) {
@@ -90,17 +91,19 @@ if ($_REQUEST['idCode']) {
 //            $sql .= " ORDER BY et.expType";
 //            break;
 //    }
-//      $sql .= " LIMIT 50"; // Just to avoid long listings when testing
-   print "<p>$sql</p>";
+    if (!isset($_REQUEST['nolimit'])) {
+        $sql .= " LIMIT 5000"; // Just to avoid long listings when testing
+    }
+    print "<p>$sql</p>";
     //     DB query
-    $rs = mysql_query($sql) or print mysql_error();
+    $rs = mysqli_query($mysqli,$sql) or print mysqli_error($mysqli);
     //     We check whether there are results to show
-    if (!mysql_num_rows($rs)) {
+    if (!mysqli_num_rows($rs)) {
         print errorPage("Not Found", "No results found.");
     } else {
         //        Results table formated with DataTable
         print headerDBW("Search results");
-        print "Num Hits: " . mysql_num_rows($rs);
+        print "Num Hits: " . mysqli_num_rows($rs);
         ?>
         <table border="0" cellspacing="2" cellpadding="4" id="dataTable">
             <thead>
@@ -114,7 +117,7 @@ if ($_REQUEST['idCode']) {
                 </tr>
             </thead>
             <tbody>
-                <?php while ($rsF = mysql_fetch_array($rs)) { ?>
+                <?php while ($rsF = mysqli_fetch_assoc($rs)) { ?>
                     <tr>
                         <td><a href="getStruc.php?idCode=<?php print $rsF['idCode'] ?>">
                                 <?php print $rsF['idCode'] ?></a></td>

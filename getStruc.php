@@ -6,11 +6,11 @@
 include "globals.inc.php";
 //get data for the structure requested
 $sql = "SELECT e.* from entry e where e.idCode='" . $_REQUEST['idCode'] . "'";
-$rs = mysql_query($sql) or print mysql_error();
-if (!mysql_num_rows($rs)) { //search is empty
+$rs = mysqli_query($mysqli, $sql) or print mysqli_error($mysqli);
+if (!mysqli_num_rows($rs)) { //search is empty
     print errorPage('Not Found', 'The requested structure is not available');
 } else {
-    $data = mysql_fetch_array($rs);
+    $data = mysqli_fetch_assoc($rs);
     print headerDBW($_REQUEST['idCode']);
     ?>
     <table border="0" cellspacing="2" cellpadding="4">
@@ -57,10 +57,10 @@ if (!mysql_num_rows($rs)) { //search is empty
                 <td colspan="2">
                     <?php
                     // new DB query to get authors
-                    $rsA = mysql_query("SELECT * from author a, author_has_entry ae where ae.idCode='" . $data['idCode'] . "' and a.idAuthor = ae.idAuthor order by a.author") or print mysql_error();
-                    if (mysql_num_rows($rsA)) {
+                    $rsA = mysqli_query($mysqli, "SELECT * from author a, author_has_entry ae where ae.idCode='" . $data['idCode'] . "' and a.idAuthor = ae.idAuthor order by a.author") or print mysqli_error($mysqli);
+                    if (mysqli_num_rows($rsA)) {
                         $auts = array();
-                        while ($rsAF = mysql_fetch_array($rsA))
+                        while ($rsAF = mysqli_fetch_assoc($rsA))
                             $auts[] = $rsAF['author'];
                         print join(", ", $auts);
                     }
@@ -72,10 +72,10 @@ if (!mysql_num_rows($rs)) { //search is empty
                 <td colspan="2">
                     <?php
                     // new DB query to get sources
-                    $rsA = mysql_query("SELECT * from source s, entry_has_source es where es.idCode='" . $data['idCode'] . "' and s.idSource = es.idSource order by s.source") or print mysql_error();
-                    if (mysql_num_rows($rsA)) {
+                    $rsA = mysqli_query($mysqli, "SELECT * from source s, entry_has_source es where es.idCode='" . $data['idCode'] . "' and s.idSource = es.idSource order by s.source") or print mysql_error($mysqli);
+                    if (mysqli_num_rows($rsA)) {
                         $sources = array();
-                        while ($rsAF = mysql_fetch_array($rsA))
+                        while ($rsAF = mysqli_fetch_assoc($rsA))
                             $sources[] = $rsAF['source'];
                         print join(", ", $sources);
                     }
@@ -87,9 +87,9 @@ if (!mysql_num_rows($rs)) { //search is empty
                 <td colspan="2">
                     <?php
                     // new DB query to get sequences, output in FASTA format
-                    $rsA = mysql_query("SELECT * from sequence s where s.idCode='" . $data['idCode'] . "' order by s.chain") or print mysql_error();
-                    if (mysql_num_rows($rsA)) {
-                        while ($sq = mysql_fetch_array($rsA)) {
+                    $rsA = mysqli_query($mysqli, "SELECT * from sequence s where s.idCode='" . $data['idCode'] . "' order by s.chain") or print mysqli_error($mysqli);
+                    if (mysqli_num_rows($rsA)) {
+                        while ($sq = mysqli_fetch_assoc($rsA)) {
                             print "<pre>" . $sq['header'] . "\n" . preg_replace("/(.{60})/", "$1\n", $sq['sequence']) . "</pre>";
                         }
                     }
