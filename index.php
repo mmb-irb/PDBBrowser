@@ -19,7 +19,7 @@ if (isset($_REQUEST['new']) or ! isset($_SESSION['queryData'])) {
 print headerDBW("PDB Browser rev. 2016");
 #Main Form follows
 ?>
-<form name="MainForm" action="search.php" method="POST" s>
+<form name="MainForm" action="search.php" method="POST" enctype="multipart/form-data">
     <table border="0" cellspacing="2" cellpadding="4" align="center">
         <tbody>
             <tr>

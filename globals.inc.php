@@ -11,9 +11,9 @@ $baseURL = dirname($_SERVER['SCRIPT_NAME']);
 
 // Temporal dir, create if not exists
 $tmpDir = "$baseDir/tmp";
-if (!file_exists($tmpDir))
+if (!file_exists($tmpDir)) {
     mkdir($tmpDir);
-
+}
 // Blast details, change to adapt to local settings
 $blastHome = "/home/dbw00/blast";
 $blastDbsDir = "$blastHome/dbs";
@@ -33,19 +33,20 @@ include_once "$incDir/libDBW.inc.php";
 $textFields = Array('e.header', 'e.compound', 'a.author', 's.source', 'sq.header');
 
 // Compounds
-$rs = mysql_query("SELECT * from comptype") or print mysql_error();
-while ($rsF = mysql_fetch_array($rs))
+$rs = mysql_query("SELECT * from comptype where type like '%nuc%'") or print mysql_error();
+while ($rsF = mysql_fetch_array($rs)) {
     $compTypeArray[$rsF['idCompType']] = $rsF;
+}
 
 //expTypes
 $rs = mysql_query("SELECT * from expType") or print mysql_error();
-while ($rsF = mysql_fetch_array($rs))
+while ($rsF = mysql_fetch_array($rs)) {
     $expTypeArray[$rsF['idExpType']] = $rsF;
-
+}
 //expClasses
 $rs = mysql_query("SELECT * from expClasse") or print mysql_error();
-while ($rsF = mysql_fetch_array($rs))
+while ($rsF = mysql_fetch_array($rs)) {
     $expClasseArray[$rsF['idExpClasse']] = $rsF;
-
+}
 // Start session to store queries
 session_start();
