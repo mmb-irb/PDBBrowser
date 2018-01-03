@@ -74,8 +74,8 @@ if (!count($result)) {
     // Cleaning temporary files
     if (file_exists($tempFile . ".query.fasta"))
         unlink($tempFile . ".query.fasta");
-    if (file_exists($tempFile . ".blast.out"))
-        unlink($tempFile . ".blast.out");
+//    if (file_exists($tempFile . ".blast.out"))
+//        unlink($tempFile . ".blast.out");
     print footerDBW();
 }
 ?>

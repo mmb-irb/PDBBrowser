@@ -19,38 +19,30 @@ if (isset($_REQUEST['new']) or ! isset($_SESSION['queryData'])) {
 print headerDBW("PDB Browser rev. 2017");
 #Main Form follows
 ?>
-<form id="MainForm" name="MainForm" action="search.php" method="POST" >
-    <div class="row">
-    <div class="col-md-2">
-        <div class="form-group">
-            <label for="PDBId"><h4>PDB Id</h4></label>
-            <input type="text" class="form-control" id="idCode" name="idCode" value="" size="5" maxlength="4" placeholder="PDB Id"/>
-            <small id="pdbIdHelp" class="form-test test-muted">Enter id for direct access to PDB Entry</small>
-        </div>
-    </div>
-    </div>
-    <div class="row">
-        <div class="col-md-2">
-            <div class="form-group">
-                <label><h4>Search fields</h4></label>
-            </div>
-        </div>
-    </div>
-    <div class="row">
-        <div class="col-md-5">
-            <div class="form-group">
-                <label>Resolution:</label>
-                From <input class="form-control" type="text" name="minRes" value="<?php print $_SESSION['queryData']['minRes'] ?>" size="5">
-                    to <input class="form-control" type="text" name="maxRes" value="<?php print $_SESSION['queryData']['maxRes'] ?>" size="5" />
-            </div>
-        </div>
-    </div>
-    <div class="row">
-        <div class="col-md-4">
-            <div class="form-group">
-                <label>Compound Type:</label>
-                <div class="form-check">
-                <?php
+<form name="MainForm" action="search.php" method="POST" enctype="multipart/form-data">
+    <table border="0" cellspacing="2" cellpadding="4" align="center">
+        <tbody>
+            <tr>
+                <td><b>PDB Id</b></td>
+                <td><input type="text" name="idCode" value="" size="5" maxlength="4"/></td>
+            </tr>
+            <tr>
+                <td colspan="2">&nbsp;</td>
+            </tr>
+            <tr>
+                <td colspan="2"><b>Search fields</b></td>
+            </tr>
+            <tr>
+                <td>Resolution:</td>
+                <td>
+                    From <input type="text" name="minRes" value="<?php print $_SESSION['queryData']['minRes'] ?>" size="5">
+                    to <input type="text" name="maxRes" value="<?php print $_SESSION['queryData']['maxRes'] ?>" size="5" />
+                </td>
+            </tr>
+            <tr>
+                <td>Compound Type:</td>
+                <td>
+                    <?php
                     /* We obtain the possible fields from the comptype table, 
                      * alternatively this could be done in globals.inc.php and stored as $compTypeArray
                      * Then here we will use $compTypeArray instead
