@@ -5,8 +5,8 @@
  * Global cariables and settings
  */
 // Base directories
-#$baseDir = $_SERVER['DOCUMENT_ROOT'].'/PDBBrowser';
-$baseDir = '/home/dbw00/public_html/PDBBrowser';
+$baseDir = dirname($_SERVER['SCRIPT_FILENAME']);
+#$baseDir = '/home/dbw00/public_html/PDBBrowser';
 $baseURL = dirname($_SERVER['SCRIPT_NAME']);
 
 // Temporal dir, create if not exists
@@ -15,7 +15,7 @@ if (!file_exists($tmpDir))
     mkdir($tmpDir);
 
 // Blast details, change to adapt to local settings
-$blastHome = "/home/dbw00/blast";
+$blastHome = "$baseDir/../../blast";
 $blastDbsDir = "$blastHome/dbs";
 $blastExe = "$blastHome/bin/blastall";
 $blastDbs = array("SwissProt" => "sprot", "PDB" => "pdb_seqres.txt");
