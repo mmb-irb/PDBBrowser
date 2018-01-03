@@ -35,7 +35,6 @@ while (<AUTS>) {
       $sthEntryAuthor->execute ($AUTHORS{$author},$idCode);
       $author_has_entry{"$AUTHORS{$author}-$idCode"}=1;
    }
-   print ".";
 }
 close AUTS;
 print "ok\n";
@@ -58,7 +57,6 @@ while (<SOUR>) {
       }
       $sthEntrySource->execute($idCode, $SOURCES{$s});
    }
-   print ".";
 }
 close SOUR;
 print "ok\n";
@@ -75,14 +73,16 @@ while (<ENTR>) {
    chomp;
    my ($idCode, $header, $ascDate, $compound, $source, $authorList, $resol, $expType) = split /\t/;
    next if (length($idCode) != 4);
-   $sthEntry-> execute ($idCode,$header, $ascDate, $compound, $resol);   	
-	if (!$ExpTypes{$expType }) {
-		$sthExpType->execute($expType);
+   if ($resol !~ /(0-9)/) {
+        $resol =0
+}
+    $sthEntry-> execute ($idCode,$header, $ascDate, substr($compound,0,255), $resol);   	
+            if (!$ExpTypes{$expType }) {
+            	$sthExpType->execute($expType);
 		$ExpTypes{$expType}=$dbh->last_insert_id('','','ExpType','idExpType');
-	}
+            }
 	$sthEntryExpType->execute($ExpTypes{$expType},$idCode);
 	$expTypesbyCode{$idCode}=$expType;
-   print ".";
 }
 close ENTR;
 print "ok\n";
@@ -133,7 +133,6 @@ while (<SEQS>) {
 	}
 	/^>([^_]*)_(.*)mol:(\S*) length:(\S*) (.*)/;
 	($idPdb,$chain,$header)=($1,$2,"$1 $2 $3 $4 $5");
-	print "$header\n";
    }
    else {$seq .= $_};
 };
