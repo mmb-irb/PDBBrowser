@@ -16,12 +16,12 @@ if ($_REQUEST['idCode']) {
     if (($_FILES['seqFile']['tmp_name'])) {
         $_SESSION['queryData']['seqQuery'] = file_get_contents($_FILES['seqFile']['tmp_name']);
     }
-    // Redirect to Blast if sequence, data is stored in $_SESSION
+    // Redirect to Blast if sequence, data is already stored in $_SESSION
     header('Location: runBlast.php');
 } else {
     //  3. normal search, Bluiding SQL SELECT from the input form
-    //     $ANDConds will contain all sql conditions found in the form
-    $ANDconds = Array("True"); // required to fulfill sql syntax if form is empty
+    //     $ANDConds will contain all SQL conditions found in the form
+    $ANDconds = ["True"]; // required to fulfill SQL syntax if form is empty
     //  Resolution, we consider only cases where user has input something
     if (($_REQUEST['minRes'] != '0.0') or ( $_REQUEST['maxRes'] != 'Inf')) {
         if ($_REQUEST['minRes'] != '0.0') {
@@ -33,7 +33,7 @@ if ($_REQUEST['idCode']) {
     }
     //     Compound type $ORconds holds options selected
     if (isset($_REQUEST['idCompType'])) { //should be isset as idCompType come from checkboxes
-        $ORconds = Array();
+        $ORconds = [];
         foreach (array_keys($_REQUEST['idCompType']) as $k) {
             $ORconds[] = " e.idCompType = " . $k;
         }
@@ -41,7 +41,7 @@ if ($_REQUEST['idCode']) {
     }
     //     Classe of experiment
     if (isset($_REQUEST['idExpClasse'])) {//should be isset as idExpClasse come from checkboxes
-        $ORconds = Array();
+        $ORconds = [];
         foreach (array_keys($_REQUEST['idExpClasse']) as $k) {
             $ORconds[] = " et.idExpClasse = " . $k;
         }
@@ -50,7 +50,7 @@ if ($_REQUEST['idCode']) {
     //    text query, adapted to use fulltext indexes, $textFields is defined in globals.inc.php and
     // lists all text fields to be searched in.
     if ($_REQUEST['query']) {
-        $ORconds = array();
+        $ORconds = [];
         foreach (array_values($textFields) as $field) {
             $ORconds[] = "MATCH (" . $field . ") AGAINST ('" . $_REQUEST['query'] . "' "
                     . "IN BOOLEAN MODE)";
@@ -67,7 +67,7 @@ if ($_REQUEST['idCode']) {
     //            $ANDconds[] = "(".join (" OR ", $ORconds).")";
     //        }
     //    }
-    //    main SQL string, make sure that all tables are joined, and relationships included
+    //    main SQL string, make sure that all tables are joint, and relationships included
     // SELECT columns FROM tables WHERE Conditions_from_relationships AND Conditions_from_query_Form
     $sql = "SELECT distinct e.idCode,e.header,e.compound,e.resolution,s.source,et.expType FROM 
         expType et, author_has_entry ae, author a, source s, entry_has_source es, entry e, sequence sq WHERE
@@ -92,9 +92,9 @@ if ($_REQUEST['idCode']) {
 //            break;
 //    }
     if (!isset($_REQUEST['nolimit'])) {
-        $sql .= " LIMIT 5000"; // Just to avoid long listings when testing
+        $sql .= " LIMIT 5000"; // Just to avoid too long listings when testing
     }
-    print "<p>$sql</p>";
+  #DEBUG  print "<p>$sql</p>";
     //     DB query
     $rs = mysqli_query($mysqli,$sql) or print mysqli_error($mysqli);
     //     We check whether there are results to show

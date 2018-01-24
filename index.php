@@ -5,15 +5,17 @@
  */
 # Loading global variables and DB connection
 include "globals.inc.php";
+//
 // $_SESSION['queryData'] array holds data from previous forms, 
 // if empty it should be initialized to avoid warnings, and set defaults
-// also a ...?new=1 allow to clean it from the URL.
-if (isset($_REQUEST['new']) or ! isset($_SESSION['queryData'])) {
-    $_SESSION['queryData'] = array(
+// also a ...?new=1 allows to clean it from the URL.
+//
+if (isset($_REQUEST['new']) or !isset($_SESSION['queryData'])) {
+    $_SESSION['queryData'] = [
         'minRes' => '0.0',
         'maxRes' => 'Inf',
         'query' => ''
-    );
+    ];
 }
 #
 print headerDBW("PDB Browser rev. 2017");
@@ -47,14 +49,12 @@ print headerDBW("PDB Browser rev. 2017");
                 <label>Compound Type:</label>
                 <div class="form-check">
                     <?php
-                    /* We obtain the possible fields from the expClasse table,
-                     * that is a condensed version of expType, alternatively this could be done in globals.inc.php
-                     * as compType
-                     * input names build idExpClasse[] array
+                    /* 
+                     * input options from $compTypeArray[] array
                      */
-                    $rs = mysqli_query($mysqli,"SELECT * from comptype");
-                    while ($rsF = mysqli_fetch_assoc($rs)) {  ?>
-                        <input class="form-check-input" type="checkbox" name="idCompType[<?php echo $rsF['idCompType'] ?>]" />  <?php echo $rsF['type'] . "\n" ?>
+                    foreach (array_keys($compTypeArray) as $idCompType ) {?>
+                        <input class="form-check-input" type="checkbox" 
+                               name="idCompType[<?php print $idCompType ?>]" />  <?php print $compTypeArray[$idCompType]."\n" ?>                       
                     <?php } ?>
                 </div>
             </div>
@@ -66,15 +66,11 @@ print headerDBW("PDB Browser rev. 2017");
                 <label>Exp. Type:</label>
                 <div class="form-check">
                     <?php
-                    /* We obtain the possible fields from the expClasse table,
-                     * that is a condensed version of expType, alternatively this could be done in globals.inc.php
-                     * as compType
-                     * input names build idExpClasse[] array
+                    /* 
+                     * input options from $expClasseArray
                      */
-                    $rs = mysqli_query($mysqli,"SELECT * from expClasse  order by ExpClasse");
-                    while ($rsF = mysqli_fetch_assoc($rs)) {                        
-                        ?>
-                        <input class="form-check-input" type="checkbox" name="idExpClasse[<?php echo $rsF['idExpClasse'] ?>]" /> <?php echo $rsF['expClasse'] . "\n" ?>
+                    foreach (array_keys($expClasseArray) as $idExpClasse) { ?>
+                        <input class="form-check-input" type="checkbox" name="idExpClasse[<?php print $rsF['idExpClasse'] ?>]" /> <?php print $expClasseArray[$idExpClasse] . "\n" ?>
                     <?php } ?>
                 </div>
             </div>

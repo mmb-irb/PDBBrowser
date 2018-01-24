@@ -52,8 +52,16 @@ if (!count($result)) {
             // headers used to generate BLAST databases, this is from PDB
             foreach (array_values($result) as $rr) {
                 if (strlen($rr) > 1) {
-                    preg_match('/(....)_(.) mol:([^ ]*) length:([0-9]*) ([^0-9]*) *([0-9]*) *([0-9e\-\.]*)/', $rr, $hits);
-                    list ($r, $idCode, $sub, $tip, $l, $desc, $sco, $ev) = $hits;
+                    preg_match('/(....)_(.) mol:([^ ]*) length:([0-9]*) *(.*)/', $rr, $hits);
+
+                    list ($r, $idCode, $sub, $tip, $l, $tmpTxt)= $hits;
+                    $tmpData = preg_split('/\s+/',$tmpTxt);
+                    if (!preg_match('/[0-9]/',$tmpData[count($tmpData)-1])) {
+                        array_pop($tmpData);
+                    }
+                    $ev = array_pop($tmpData);
+                    $sco = array_pop($tmpData);
+                    $desc = join(' ',$tmpData);     
                     ?>
                     <tr>
                         <td>
@@ -78,6 +86,7 @@ if (!count($result)) {
 //        unlink($tempFile . ".blast.out");
     print footerDBW();
 }
+// DataTable activation
 ?>
 <script type="text/javascript">
     $(document).ready(function () {

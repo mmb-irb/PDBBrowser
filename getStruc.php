@@ -36,10 +36,11 @@ if (!mysqli_num_rows($rs)) { //search is empty
                 <td>Resolution</td>
                 <td>
                     <?php
-                    if ($data['resolution'])
+                    if ($data['resolution']) {
                         print $data['resolution'];
-                    else
+                    } else {
                         print "N.D.";
+                    }
                     ?>
                 </td>
             </tr>
@@ -87,7 +88,8 @@ if (!mysqli_num_rows($rs)) { //search is empty
                 <td colspan="2">
                     <?php
                     // new DB query to get sequences, output in FASTA format
-                    $rsA = mysqli_query($mysqli, "SELECT * from sequence s where s.idCode='" . $data['idCode'] . "' order by s.chain") or print mysqli_error($mysqli);
+                    $rsA = mysqli_query($mysqli, "SELECT * from sequence s where s.idCode='" . $data['idCode'] . "' order by s.chain")
+                            or print mysqli_error($mysqli);
                     if (mysqli_num_rows($rsA)) {
                         while ($sq = mysqli_fetch_assoc($rsA)) {
                             print "<pre>" . $sq['header'] . "\n" . preg_replace("/(.{60})/", "$1\n", $sq['sequence']) . "</pre>";

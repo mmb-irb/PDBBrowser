@@ -15,7 +15,6 @@ function headerDBW($title) {
       <script src=\"https://oss.maxcdn.com/html5shiv/3.7.3/html5shiv.min.js\"></script>
       <script src=\"https://oss.maxcdn.com/respond/1.4.2/respond.min.js\"></script>
     <![endif]--> 
-<!--<link rel=\"stylesheet\" type=\"text/css\" href=\"estil.css\">-->
         <link rel=\"stylesheet\" href=\"DataTable/jquery.dataTables.min.css\"/>
         <script type=\"text/javascript\" src=\"DataTable/jquery-2.2.0.min.js\"></script>
         <script type=\"text/javascript\" src=\"DataTable/jquery.dataTables.min.js\"></script>
