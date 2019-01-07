@@ -10,6 +10,7 @@ include "globals.inc.php";
 // if empty it should be initialized to avoid warnings, and set defaults
 // also a ...?new=1 allows to clean it from the URL.
 //
+
 if (isset($_REQUEST['new']) or !isset($_SESSION['queryData'])) {
     $_SESSION['queryData'] = [
         'minRes' => '0.0',
@@ -18,13 +19,14 @@ if (isset($_REQUEST['new']) or !isset($_SESSION['queryData'])) {
     ];
 }
 #
-print headerDBW("PDB Browser rev. 2017");
+print headerDBW("PDB Browser rev. 2018");
 #Main Form follows
 ?>
 <form name="MainForm" action="search.php" method="POST" enctype="multipart/form-data">
     <div class="row" style="border-bottom: solid 1px">
         <div class="form-group">
-            <label><b>PDB Id</b></label> <input type="text" name="idCode" value="" size="5" maxlength="4"/>
+            <label><b>PDB Id</b></label>
+            <input type="text" name="idCode" value="<?php print $_SESSION['queryData']['idCode']?>" size="5" maxlength="4"/>
         </div>
     </div>
     <div class="row">

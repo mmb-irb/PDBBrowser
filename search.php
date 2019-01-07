@@ -17,7 +17,7 @@ if ($_REQUEST['idCode']) {
         $_SESSION['queryData']['seqQuery'] = file_get_contents($_FILES['seqFile']['tmp_name']);
     }
     // Redirect to Blast if sequence, data is already stored in $_SESSION
-    header('Location: runBlast.php');
+    header('Location: test_runBlast.php');
 } else {
     //  3. normal search, Bluiding SQL SELECT from the input form
     //     $ANDConds will contain all SQL conditions found in the form
@@ -94,7 +94,8 @@ if ($_REQUEST['idCode']) {
     if (!isset($_REQUEST['nolimit'])) {
         $sql .= " LIMIT 5000"; // Just to avoid too long listings when testing
     }
-  #DEBUG  print "<p>$sql</p>";
+#DEBUG
+ print "<p>$sql</p>";
     //     DB query
     $rs = mysqli_query($mysqli,$sql) or print mysqli_error($mysqli);
     //     We check whether there are results to show
