@@ -5,41 +5,37 @@ use strict;
 require "bdconn.pl";
 #
 my $dbh=connectDB();
-
-# First Clean Tables !!
+# Clean Tables !!
 foreach my $tab ('entry', 'source', 'sequence', 'author', 'author_has_entry', 'expType', 'comptype', 'entry_has_source', 'expClasse') {
    print "Cleaning $tab\n";
    $dbh->do ("DELETE FROM $tab");
 }
-# Set Auto-increment PKs to 1
 foreach my $tab ('source','author','expType','comptype','expClasse') {
    $dbh->do ("ALTER TABLE $tab AUTO_INCREMENT=1");
 }
 #
-# Temporarily stop checking of FKs. Otherwise loadign should be done in order
 $dbh->do("SET FOREIGN_KEY_CHECKS=0");
 #
 print "Authors...";
 my %AUTHORS;
 my %author_has_entry;
-# In Perl DBI SQL commands can be "prepared" before use to ease the syntax later, ? represent parameters
 my $sthAuthor=$dbh->prepare ("INSERT INTO author (author) VALUES (?)");
 my $sthEntryAuthor=$dbh->prepare("INSERT INTO author_has_entry VALUES (?,?)");
 open AUTS, "author.idx";
 while (<AUTS>) {
-   next if !/;/;
-   chomp;
-   my ($idCode, $author) = split / *; */;
-   next if (!$author);
-   if ($author && !$AUTHORS{$author}) {
-   	$sthAuthor->execute ($author);
-# last_insert_id recovers the last inserted value when auto_increment PK is in place
-	$AUTHORS{$author}=$dbh->last_insert_id('','','Author','idAuthor');
-   }
-   if (!$author_has_entry{"$AUTHORS{$author}-$idCode"}) {
-      $sthEntryAuthor->execute ($AUTHORS{$author},$idCode);
-      $author_has_entry{"$AUTHORS{$author}-$idCode"}=1;
-   }
+  next if !/;/;
+  chomp;
+  my ($idCode, $author) = split / *; */;
+  next if (!$author);
+  if ($author && !$AUTHORS{$author}) {
+  	$sthAuthor->execute ($author);
+        $AUTHORS{$author}=$dbh->last_insert_id('','','Author','idAuthor');
+  }
+  if (!$author_has_entry{"$AUTHORS{$author}-$idCode"}) {
+     $sthEntryAuthor->execute ($AUTHORS{$author},$idCode);
+     $author_has_entry{"$AUTHORS{$author}-$idCode"}=1;
+  }
+  print ".";
 }
 close AUTS;
 print "ok\n";
@@ -62,6 +58,7 @@ while (<SOUR>) {
       }
       $sthEntrySource->execute($idCode, $SOURCES{$s});
    }
+   print ".";
 }
 close SOUR;
 print "ok\n";
@@ -78,17 +75,22 @@ while (<ENTR>) {
    chomp;
    my ($idCode, $header, $ascDate, $compound, $source, $authorList, $resol, $expType) = split /\t/;
    next if (length($idCode) != 4);
-   if ($resol !~ /(0-9)/) {
-        $resol =0
-}
-        $sthEntry-> execute ($idCode,$header, $ascDate, substr($compound,0,255), $resol);   	
-        # if the $expType is new, add to the ExpType table first to get the idExpType
-        if (!$ExpTypes{$expType }) {
-            $sthExpType->execute($expType);
-            $ExpTypes{$expType}=$dbh->last_insert_id('','','ExpType','idExpType');
-        }
+   if ($resol =~/NOT/) {
+	$resol = 0
+   }
+   if ($resol =~ /,/) {
+	my @r = split /,/, $resol;
+	$resol =$r[0];
+   }
+   $compound = substr($compound,0,255);
+   $sthEntry-> execute ($idCode,$header, $ascDate, $compound, $resol);   	
+	if (!$ExpTypes{$expType }) {
+		$sthExpType->execute($expType);
+		$ExpTypes{$expType}=$dbh->last_insert_id('','','ExpType','idExpType');
+	}
 	$sthEntryExpType->execute($ExpTypes{$expType},$idCode);
 	$expTypesbyCode{$idCode}=$expType;
+   print ".";
 }
 close ENTR;
 print "ok\n";
@@ -106,12 +108,10 @@ while (<EXPCL>) {
    chomp;
 	my ($idCode, $compType, $expClass) = split ' ';
 	$idCode =~ tr/a-z/A-Z/;
-        # if $expClass is new, add first to expClasses table
 	if (!$expClasses{$expClass}) {
 		$sthExpClasse->execute($expClass);
 		$expClasses{$expClass}=$dbh->last_insert_id('','','expClasses','idExpClass');
 	}
-        # if $compType is new, add first to compType table
 	if (!$compTypes{$compType}) {
 		$sthcompType->execute($compType);
 		$compTypes{$compType}=$dbh->last_insert_id('','','compType','idCompType');
@@ -141,10 +141,9 @@ while (<SEQS>) {
 	}
 	/^>([^_]*)_(.*)mol:(\S*) length:(\S*) (.*)/;
 	($idPdb,$chain,$header)=($1,$2,"$1 $2 $3 $4 $5");
+	print "$header\n";
    }
    else {$seq .= $_};
 };
 print "ok\n";
-# Recover the FK checking
-$dbh->do("SET FOREIGN_KEY_CHECKS=1");
 disconnectDB($dbh);
