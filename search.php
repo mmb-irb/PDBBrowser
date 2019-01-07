@@ -17,7 +17,7 @@ if ($_REQUEST['idCode']) {
         $_SESSION['queryData']['seqQuery'] = file_get_contents($_FILES['seqFile']['tmp_name']);
     }
     // Redirect to Blast if sequence, data is already stored in $_SESSION
-    header('Location: test_runBlast.php');
+    header('Location: runBlast.php');
 } else {
     //  3. normal search, Bluiding SQL SELECT from the input form
     //     $ANDConds will contain all SQL conditions found in the form
