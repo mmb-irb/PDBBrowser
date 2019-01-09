@@ -17,19 +17,10 @@ $ff = fopen($tempFile . ".query.fasta", 'wt');
 fwrite($ff, $_SESSION['queryData']['seqQuery']);
 fclose($ff);
 // execute Blast, Command line set in globals.inc.php
-//print $blastCmdLine." -i ".$tempFile.".query.fasta -o ".$tempFile.".blast.out";
-exec($blastCmdLine . " -i " . $tempFile . ".query.fasta -o " . $tempFile . ".blast.out");
+print $blastCmdLine . " -query " . $tempFile . ".query.fasta -out " . $tempFile . ".blast.out\n";
+exec($blastCmdLine . " -query " . $tempFile . ".query.fasta -out " . $tempFile . ".blast.out");
 // Read results file and parse hits onto $result[]
-$blast = file($tempFile . ".blast.out");
-$i = 0;
-while (!preg_match('/Sequences producing/', $blast[$i]) and ( $i < count($blast)))
-    $i++;
-$i++;
-while (!preg_match('/Database:/', $blast[$i]) and ( $i < count($blast))) {
-    if ($blast[$i])
-        $result[] = $blast[$i];
-    $i++;
-}
+$result = file($tempFile . ".blast.out");
 if (!count($result)) {
     print errorPage("Not Found", 'No results found. <p class="button" ><a href="index.php?new=1">New Search</a></p>');
 } else {
@@ -48,20 +39,12 @@ if (!count($result)) {
         </thead>
         <tbody>
             <?php
-            // parsing hit following specific format, note that this format is not standard. It comes from the 
-            // headers used to generate BLAST databases, this is from PDB
             foreach (array_values($result) as $rr) {
                 if (strlen($rr) > 1) {
-                    preg_match('/(....)_(.) mol:([^ ]*) length:([0-9]*) *(.*)/', $rr, $hits);
-
-                    list ($r, $idCode, $sub, $tip, $l, $tmpTxt)= $hits;
-                    $tmpData = preg_split('/\s+/',$tmpTxt);
-                    if (!preg_match('/[0-9]/',$tmpData[count($tmpData)-1])) {
-                        array_pop($tmpData);
-                    }
-                    $ev = array_pop($tmpData);
-                    $sco = array_pop($tmpData);
-                    $desc = join(' ',$tmpData);     
+  		    $data = explode ("\t",$rr);
+                    preg_match('/(....)_(.) mol:([^ ]*) length:([0-9]*) *(.*)/', $data[1], $hits);
+                    list ($r, $idCode, $sub, $tip, $l, $desc)= $hits;
+                    $ev = $data[2];
                     ?>
                     <tr>
                         <td>

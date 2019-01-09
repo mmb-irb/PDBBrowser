@@ -19,10 +19,10 @@ if (!file_exists($tmpDir)) {
 // Blast details, change to adapt to local settings
 // Blast databases should be created using the appropriate programs.
 $blastHome = "$baseDir/../../blast";
-$blastDbsDir = "$blastHome/dbs";
-$blastExe = "$blastHome/bin/blastall";
-$blastDbs = array("SwissProt" => "sprot", "PDB" => "pdb_seqres.txt");
-$blastCmdLine = "$blastExe -d $blastDbsDir/" . $blastDbs['PDB'] . " -p blastp  -e 0.001 -v 100 -b 0 ";
+$blastDbsDir = "$blastHome/DBS";
+$blastExe = "$blastHome/bin/blastp";
+$blastDbs = array("SwissProt" => "sprot", "PDB" => "pdb");
+$blastCmdLine = "$blastExe -db $blastDbsDir/" . $blastDbs['PDB'] . " -evalue 0.001 -max_target_seqs 100 -outfmt \"6 sseqid stitle evalue\"";
 
 // Include directory
 $incDir = "$baseDir/include";
