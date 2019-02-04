@@ -95,7 +95,7 @@ if ($_REQUEST['idCode']) {
         $sql .= " LIMIT 5000"; // Just to avoid too long listings when testing
     }
 #DEBUG
- print "<p>$sql</p>";
+// print "<p>$sql</p>";
     //     DB query
     $rs = mysqli_query($mysqli,$sql) or print mysqli_error($mysqli);
     //     We check whether there are results to show

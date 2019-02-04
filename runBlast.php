@@ -17,7 +17,7 @@ $ff = fopen($tempFile . ".query.fasta", 'wt');
 fwrite($ff, $_SESSION['queryData']['seqQuery']);
 fclose($ff);
 // execute Blast, Command line set in globals.inc.php
-print $blastCmdLine . " -query " . $tempFile . ".query.fasta -out " . $tempFile . ".blast.out\n";
+#print $blastCmdLine . " -query " . $tempFile . ".query.fasta -out " . $tempFile . ".blast.out\n";
 exec($blastCmdLine . " -query " . $tempFile . ".query.fasta -out " . $tempFile . ".blast.out");
 // Read results file and parse hits onto $result[]
 $result = file($tempFile . ".blast.out");

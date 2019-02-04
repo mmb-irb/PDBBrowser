@@ -9,4 +9,4 @@ $dbname = "pdb";
 $user = "dbw00";
 $password = "dbw2018";
 ($mysqli = mysqli_connect($host, $user, $password)) or die(mysqli_error());
-mysqli_select_db($mysqli, $dbname) or die(mysql_error($mysqli));
+mysqli_select_db($mysqli, $dbname) or die(mysqli_error($mysqli));

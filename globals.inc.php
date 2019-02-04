@@ -36,18 +36,18 @@ include_once "$incDir/libDBW.inc.php";
 $textFields = Array('e.header', 'e.compound', 'a.author', 's.source', 'sq.header');
 
 // Compounds
-$rs = mysqli_query($mysqli, "SELECT * from comptype") or print mysql_error();
+$rs = mysqli_query($mysqli, "SELECT * from comptype") or print mysqli_error($mysqli);
 while ($rsF = mysqli_fetch_array($rs)) {
     $compTypeArray[$rsF['idCompType']] = $rsF['type'];
 }
 
 //expTypes
-$rs = mysqli_query($mysqli,"SELECT * from expType") or print mysql_error();
+$rs = mysqli_query($mysqli,"SELECT * from expType") or print mysqli_error($mysqli);
 while ($rsF = mysqli_fetch_array($rs)) {
     $expTypeArray[$rsF['idExpType']] = $rsF;
 }
 //expClasses
-$rs = mysqli_query($mysqli,"SELECT * from expClasse") or print mysql_error();
+$rs = mysqli_query($mysqli,"SELECT * from expClasse") or print mysqli_error($mysqli);
 while ($rsF = mysqli_fetch_array($rs)) {
     $expClasseArray[$rsF['idExpClasse']] = $rsF['expClasse'];
 }

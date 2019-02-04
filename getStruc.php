@@ -1,4 +1,4 @@
-<?php
+#<?php
 /*
  * getStruc.php Shows data for a PDB entry
  */
@@ -73,7 +73,7 @@ if (!mysqli_num_rows($rs)) { //search is empty
                 <td colspan="2">
                     <?php
                     // new DB query to get sources
-                    $rsA = mysqli_query($mysqli, "SELECT * from source s, entry_has_source es where es.idCode='" . $data['idCode'] . "' and s.idSource = es.idSource order by s.source") or print mysql_error($mysqli);
+                    $rsA = mysqli_query($mysqli, "SELECT * from source s, entry_has_source es where es.idCode='" . $data['idCode'] . "' and s.idSource = es.idSource order by s.source") or print mysqli_error($mysqli);
                     if (mysqli_num_rows($rsA)) {
                         $sources = array();
                         while ($rsAF = mysqli_fetch_assoc($rsA))
