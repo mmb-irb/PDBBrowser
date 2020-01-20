@@ -26,7 +26,7 @@ while (<AUTS>) {
   next if !/;/;
   chomp;
   my ($idCode, $author) = split / *; */;
-  next if (!$author);
+  next if ($idCode eq 'IDCODE') || !$author;
   if ($author && !$AUTHORS{$author}) {
   	$sthAuthor->execute ($author);
         $AUTHORS{$author}=$dbh->last_insert_id('','','Author','idAuthor');
