@@ -4,8 +4,8 @@ import re
 #Database connection
 database = "pdb";
 host = "localhost";
-user="gelpi"; 
-passwd = "jl12gb";
+user="dbw00"; 
+passwd = "dbw2018";
 
 connection = pymysql.connect(host='localhost',
                 user=user,
