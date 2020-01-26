@@ -1,4 +1,4 @@
-#<?php
+<?php
 /*
  * getStruc.php Shows data for a PDB entry
  */
@@ -13,7 +13,7 @@ if (!mysqli_num_rows($rs)) { //search is empty
     $data = mysqli_fetch_assoc($rs);
     print headerDBW($_REQUEST['idCode']);
     ?>
-    <table border="0" cellspacing="2" cellpadding="4">
+    <table class="table table-hover">
         <tbody>
             <tr>
                 <td>PDB reference</td>
