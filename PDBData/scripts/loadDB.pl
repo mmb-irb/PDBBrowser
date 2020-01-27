@@ -50,13 +50,19 @@ open SOUR, "source.idx";
 while (<SOUR>) {
    chomp;
    my ($idCode,$source) = split ' ', $_, 2;
-   next if (!$source) || (length($idCode) != 4);
+   next if (length($idCode) != 4);
+   if (!$source) {
+	   $source = 'N.A.';
+   }
    foreach my $s (split /; */, $source) {
       if (!$SOURCES{$s}) {
          $sthSource->execute ($s);
 	 $SOURCES{$s}=$dbh->last_insert_id('','','source','idSource');
       }
-      $sthEntrySource->execute($idCode, $SOURCES{$s});
+      if (!$Entry_has_source{"$idCode-$SOURCES{$s}"}) { 
+	 $sthEntrySource->execute($idCode, $SOURCES{$s});
+	 $Entry_has_source{"$idCode-$SOURCES{$s}"} = 1;
+      }
    }
    print ".";
 }
