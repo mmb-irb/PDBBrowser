@@ -1,5 +1,4 @@
 <?php
-
 /*
  * globals.inc.php
  * Global variables and settings
@@ -18,7 +17,7 @@ if (!file_exists($tmpDir)) {
 }
 // Blast details, change to adapt to local settings
 // Blast databases should be created using the appropriate programs.
-$blastHome = "$baseDir/../../blast";
+$blastHome = "/home/gelpi/blast";
 $blastDbsDir = "$blastHome/DBS";
 $blastExe = "$blastHome/bin/blastp";
 $blastDbs = array("SwissProt" => "sprot", "PDB" => "pdb");
@@ -33,7 +32,7 @@ include_once "$incDir/libDBW.inc.php";
 
 // Load predefined arrays
 // Fulltext search fields
-$textFields = Array('e.header', 'e.compound', 'a.author', 's.source', 'sq.header');
+$textFields = ['e.header', 'e.compound', 'a.author', 's.source', 'sq.header'];
 
 // Compounds
 $rs = mysqli_query($mysqli, "SELECT * from comptype") or print mysqli_error($mysqli);
