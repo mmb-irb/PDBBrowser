@@ -19,53 +19,82 @@
 <div class= "container">
     <h1>DBW - PDBBrowser - (No PHP form)</h1>
     <form name="MainForm" action="searchTest.php" method="POST" enctype="multipart/form-data">
-        <table align="center" border="0" cellpadding="4" cellspacing="2">
-            <tbody>
-                <tr>
-                    <td>PDB Id</td>
-                    <td><input name="idCode" size="5" maxlength="4" type="text"></td>
-                </tr>
-                <tr>
-                    <td colspan="2"><b>Search fields</b></td>
-                </tr>
-                <tr>
-                    <td>Resolution:</td>
-                    <td>From <input name="minRes" value="0.0" size="5" type="text"> to <input name="maxRes" value="Inf" size="5" type="text"></td>
-                </tr>
-                <tr>
-                    <td>Compound Type:</td>
-                    <td>
-                        <input name="idCompType[1]" type="checkbox"> nuc
-                        <input name="idCompType[2]" type="checkbox"> prot
-                        <input name="idCompType[3]" type="checkbox"> prot-nuc
-                        <input name="idCompType[4]" type="checkbox"> carb
-                    </td>
-                </tr>
-                <tr>
-                    <td>Exp Type:</td>
-                    <td>
-                        <input name="idExpClasse[1]" type="checkbox"> diffraction
-                        <input name="idExpClasse[3]" type="checkbox"> EM
-                        <input name="idExpClasse[2]" type="checkbox"> NMR
-                    </td>
-                </tr>
-                <tr>
-                    <td>Text Search:</td>
-                    <td><input name="query" size="60" type="text"></td>
-                </tr>
-                <tr>
-                    <td>Sequence search:</td>
-                    <td><textarea name="seqQuery" rows="4" cols="60"></textarea><br>
-                        Uploaded sequence file: <input name="seqFile" type="file"/></td>
-                </tr>
-                <tr>
-                    <td colspan="2" align="center">
-                        <input value="Submit" type="submit"> 
-                        <input value="Reset" type="reset">
-                    </td>
-                </tr>
-            </tbody>
-        </table>
-    </form>
+        <div class="row" style="border-bottom: solid 1px">
+            <div class="form-group">
+                <label><b>PDB Id</b></label>
+                <input type="text" name="idCode" size="5" maxlength="4"/>
+            </div>
+        </div>
+            
+        <div class="row">
+            <h3>Search fields</h3>
+        </div>
+        
+        <div class="row">
+            <div class="col-md-4">
+                <div class="form-group">
+                    <label>Resolution</label>
+                    <p>                    
+                        From <input type="text" name="minRes" size="5">
+                        to <input type="text" name="maxRes" size="5" >
+                    </p>
+                </div>
+            </div>
+        </div>
+        
+        <div class="row">
+            <div class="col-md-4">
+                <div class="form-group">
+                    <label>Compound Type:</label>
+                    <div class="form-check">
+                        <input class="form-check-input" name="idCompType[1]" type="checkbox"> nuc
+                        <input class="form-check-input" name="idCompType[2]" type="checkbox"> prot
+                        <input class="form-check-input" name="idCompType[3]" type="checkbox"> prot-nuc
+                        <input class="form-check-input" name="idCompType[4]" type="checkbox"> carb
+                    </div>
+                </div>
+            </div>
+        </div>
+                       
+        <div class="row">
+            <div class="col-md-4">
+                <div class="form-group">
+                    <label>Exp. Type:</label>
+                    <div class="form-check">
+                        <input class="form-check-input" name="idExpClasse[1]" type="checkbox"> diffraction
+                        <input class="form-check-input" name="idExpClasse[3]" type="checkbox"> EM
+                        <input class="form-check-input" name="idExpClasse[2]" type="checkbox"> NMR
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="row" style="border-bottom: 1px solid">
+            <div class="col-md-6">
+                <label><h4> Text Search</h4></label>
+                <div class="form-group">
+                    <input type="text" name="query" style="width:100%" />
+                </div>
+            </div>
+        </div>
+        <div class="row" style="border-bottom: 1px solid">
+            <div class="col-md-6">
+                <label>
+                    <h4>Sequence search</h4>
+                </label>
+                <div class="form-group">
+                    <textarea class="form-control" name="seqQuery" rows="4" cols="60" style="width:100%"></textarea><br>
+                    Upload sequence file: <input type="file" name="seqFile" value="" width="50" style="width:100%"/>
+                </div>
+            </div>
+        </div>
+    
+        <div class="row">
+            <p>
+                <button type='submit' class="btn btn-primary">Submit</button>
+                <button type='reset' class="btn btn-primary">Reset</button>
+                <button type='button' class="btn btn-primary" onclick="window.location.href='index.php?new=1'">New Search</button>
+            </p>
+        </div>
     </body>
 </html>
