@@ -31,6 +31,7 @@ function search($searchInput) {
 
     $request = json_decode($searchInput, $assoc=True);
 
+
     $ANDconds = ["True"]; // required to fulfill SQL syntax if form is empty
     //  Resolution, we consider only cases where user has input something
     if (isset($request['minRes']) and $request['minRes'] != '0.0') {
@@ -40,17 +41,17 @@ function search($searchInput) {
             $ANDconds[] = "e.resolution <= " . $request['maxRes'];
     }
     // Compound type $ORconds holds options selected
-    if (isset($request['idCompType'])) { //should be isset as idCompType come from checkboxes
+    if ($request['checkedComps']) { 
         $ORconds = [];
-        foreach (array_keys($request['idCompType']) as $k) {
+        foreach ($request['checkedComps'] as $k) {
             $ORconds[] = " e.idCompType = " . $k;
         }
         $ANDconds[] = "(" . join(" OR ", $ORconds) . ")";
     }
     // Classe of experiment
-    if (isset($request['idExpClasse'])) {//should be isset as idExpClasse come from checkboxes
+    if ($request['checkedExp']) {
         $ORconds = [];
-        foreach (array_keys($request['idExpClasse']) as $k) {
+        foreach ($request['checkedExp'] as $k) {
             $ORconds[] = " et.idExpClasse = " . $k;
         }
         $ANDconds[] = "(" . join(" OR ", $ORconds) . ")";
@@ -79,8 +80,8 @@ function search($searchInput) {
         $sql .= " LIMIT 5000"; // Just to avoid too long listings when testing
     }
     #DEBUG
-    // print "<p>$sql</p>";
-    // exit();
+//    print "<p>$sql</p>";
+//    exit();
     // DB query
     $rs = mysqli_query($mysqli,$sql) or print mysqli_error($mysqli);
 
@@ -97,9 +98,16 @@ function search($searchInput) {
 function blast($sequence) {
     global $tmpDir, $blastCmdLine, $mysqli;
     $tempFile = $GLOBALS['tmpDir'] . "/" . uniqId('pdb');
+
+
+    // check format
+    $p = strpos($sequence, ">"); 
+    if (!$p and ($p !== 0)) {
+        $sequence = "> User uploaded sequence\n".$sequence;
+    }
     // Open temporary file and store query FASTA
     $ff = fopen($tempFile . ".query.fasta", 'wt');
-    fwrite($ff, "> User uploaded sequence\n".$sequence);
+    fwrite($ff, $sequence);
     fclose($ff);
     
     // execute Blast, command line prefix set in globals.inc.php
@@ -111,7 +119,7 @@ function blast($sequence) {
     // Read results file and parse hits onto $result[]
     $result = file($tempFile . ".blast.out");
     if (!$result or !count($result)) {
-        return ['error'=>'404', 'message'=> 'No results found.'];
+        return ['error' => ['errorId'=>404, 'message'=> 'No results found.']];
     }
     $records = [];
     foreach (array_values($result) as $rr) { 
@@ -135,7 +143,7 @@ function blast($sequence) {
         unlink($tempFile . ".blast.out");
     }
 
-    return $records;
+    return ['hits' => $records];
 }
 
 function show($idCode) {
