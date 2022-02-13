@@ -156,6 +156,7 @@ function show($idCode) {
     }
     // Get Main entry
     $data = mysqli_fetch_assoc($rs);
+    $data['ExpType'] = $GLOBALS['expTypeArray'][$data['idExpType']]['ExpType'];
     // new DB query to get authors
     $data['auts'] = '';
     $rsA = mysqli_query($mysqli, "SELECT * from author a, author_has_entry ae where ae.idCode='" . $data['idCode'] . "' and a.idAuthor = ae.idAuthor order by a.author") or print mysqli_error($mysqli);
