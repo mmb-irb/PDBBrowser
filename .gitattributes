@@ -1,0 +1,1 @@
+PDBData/pdb_seqres.txt filter=lfs diff=lfs merge=lfs -text
